@@ -141,18 +141,18 @@
     // ===== MODALS =====
     const modalData = {
       aboutModal: `
-        <h2 class="text-2xl font-bold text-white mb-2">About TephdyPDF Pro</h2>
+        <h2 class="text-2xl font-bold text-white mb-2">About VeloPdf</h2>
         <p class="text-xs text-pink-400 font-semibold mb-4">Developed by Tephdytech by Joseph Tanay Amandy</p>
-        <p>TephdyPDF Pro is a browser-based PDF utility developed and maintained by Tephdytech, associated with Joseph Tanay Amandy. It provides tools to view PDF pages, add visible text, shapes, images and hand-drawn marks, rearrange or remove pages, and export an edited copy.</p>
+        <p>VeloPdf is a browser-based PDF utility developed and maintained by Tephdytech, associated with Joseph Tanay Amandy. It provides tools to view PDF pages, add visible text, shapes, images and hand-drawn marks, rearrange or remove pages, and export an edited copy.</p>
         <h3 class="text-base font-semibold text-white">Publisher and contact</h3>
-        <p>This notice identifies the publisher using the name currently provided for the project. It does not establish a registered company, registered office, mailing address, or dedicated support address. For project questions, use the official channel through which you obtained TephdyPDF Pro. Do not send sensitive documents or personal information through a public channel.</p>
+        <p>This notice identifies the publisher using the name currently provided for the project. It does not establish a registered company, registered office, mailing address, or dedicated support address. For project questions, use the official channel through which you obtained VeloPdf. Do not send sensitive documents or personal information through a public channel.</p>
         <h3 class="text-base font-semibold text-white">Important limitation</h3>
         <p>The service is a document-editing utility, not a law firm, certification authority, records custodian, or provider of legal, financial, or professional advice. A mark placed on a PDF is a visual annotation and is not, by itself, a cryptographic digital signature or proof of identity, consent, delivery, or enforceability.</p>
         <p>Product descriptions are informational and may change as the software changes. Review the applicable terms, privacy, security, and compliance notices before relying on the service for a particular document or workflow.</p>
       `,
       featuresModal: `
         <h2 class="text-2xl font-bold text-white mb-4">Features and acceptable use</h2>
-        <p>TephdyPDF Pro provides browser-based tools for rendering PDF pages, placing editable text annotations and shapes, adding image-based marks, reordering or deleting pages, and downloading a modified PDF. Availability and behavior may vary with the browser, device, file structure, and loaded third-party libraries.</p>
+        <p>VeloPdf provides browser-based tools for rendering PDF pages, placing editable text annotations and shapes, adding image-based marks, reordering or deleting pages, and downloading a modified PDF. Availability and behavior may vary with the browser, device, file structure, and loaded third-party libraries.</p>
         <h3 class="text-base font-semibold text-white">Use and responsibility</h3>
         <p>You are responsible for having the rights and authority to access, modify, upload into your browser, and distribute the documents and images you use. Use the tools lawfully, respect privacy, confidentiality, intellectual property and record-retention duties, and obtain any required consent before modifying or sharing another person's document.</p>
         <p>Editing can change page order, remove content, alter appearance, or fail to preserve features such as forms, metadata, accessibility information, embedded files, or digital-signature validity. Work on a copy, inspect every page and the exported file, and retain the original when it matters.</p>
@@ -161,20 +161,20 @@
       `,
       securityModal: `
         <h2 class="text-2xl font-bold text-white mb-4">Security & Protection</h2>
-        <p>The application is designed to read and modify the PDF selected by you in your browser. The application code does not include a feature that uploads the selected PDF to a TephdyPDF document-processing server. Files and annotations are handled in browser memory while you use the editor; closing or reloading the page can discard unsaved work.</p>
+        <p>The application is designed to read and modify the PDF selected by you in your browser. The application code does not include a feature that uploads the selected PDF to a VeloPdf document-processing server. Files and annotations are handled in browser memory while you use the editor; closing or reloading the page can discard unsaved work.</p>
         <h3 class="text-base font-semibold text-white">Limits of this security statement</h3>
         <p>The website loads PDF.js and pdf-lib from third-party content-delivery services. Your browser must contact the site hosting this application and those services to retrieve the page and libraries. Those providers, your network operator, browser, extensions, device, or security software may process connection or diagnostic information under their own practices. This application has not been independently penetration-tested or audited, and this notice is not a guarantee that every dependency or device is secure.</p>
         <p>Use a trusted, updated device and browser, protect access to your device, and avoid editing highly sensitive documents on a shared or compromised device. Review a downloaded file before sharing it.</p>
       `,
       complianceModal: `
         <h2 class="text-2xl font-bold text-white mb-4">Compliance & Governance</h2>
-        <p>This notice describes product intentions and does not certify legal or regulatory compliance. The information currently available for TephdyPDF Pro is not sufficient to establish that the service, its publisher, hosting arrangements, or every third-party dependency complies with a particular privacy, security, accessibility, records-management, or industry framework.</p>
+        <p>This notice describes product intentions and does not certify legal or regulatory compliance. The information currently available for VeloPdf is not sufficient to establish that the service, its publisher, hosting arrangements, or every third-party dependency complies with a particular privacy, security, accessibility, records-management, or industry framework.</p>
         <p>Organizations remain responsible for assessing their own legal obligations, conducting vendor and security reviews, obtaining required approvals, and deciding whether the application is appropriate for their data and workflows. Do not rely on this page as a data-processing agreement, security certification, audit report, or legal opinion.</p>
       `,
       termsModal: `
         <h2 class="text-2xl font-bold text-white mb-4">Terms of Service</h2>
         <p><strong>Effective date:</strong> November 1, 2026</p>
-        <p>These terms apply to your access to and use of TephdyPDF Pro, a browser-based PDF utility published under the Tephdytech name and associated with Joseph Tanay Amandy (“the service”). By using the service, you agree to use it only as permitted by applicable law. If you do not agree, do not use it.</p>
+        <p>These terms apply to your access to and use of VeloPdf, a browser-based PDF utility published under the Tephdytech name and associated with Joseph Tanay Amandy (“the service”). By using the service, you agree to use it only as permitted by applicable law. If you do not agree, do not use it.</p>
         <h3 class="text-base font-semibold text-white">Permitted use and your documents</h3>
         <p>You must have the rights and authority needed to access, edit, and share each document or image you use. You retain responsibility for your content, its accuracy, the legality of your instructions, and any disclosure or distribution. Do not use the service to infringe rights, violate confidentiality or privacy, evade legal controls, or interfere with the service or another person's systems.</p>
         <h3 class="text-base font-semibold text-white">Service limitations</h3>
@@ -188,9 +188,9 @@
       privacyModal: `
         <h2 class="text-2xl font-bold text-white mb-4">Privacy Policy</h2>
         <p><strong>Effective date:</strong> November 1, 2026</p>
-        <p>This notice explains the intended data handling for TephdyPDF Pro, a browser-based utility published under the Tephdytech name and associated with Joseph Tanay Amandy. It describes the application as currently implemented; it is not a claim that no other party processes information when you visit the site.</p>
+        <p>This notice explains the intended data handling for VeloPdf, a browser-based utility published under the Tephdytech name and associated with Joseph Tanay Amandy. It describes the application as currently implemented; it is not a claim that no other party processes information when you visit the site.</p>
         <h3 class="text-base font-semibold text-white">PDFs and information you enter</h3>
-        <p>The editor reads the PDF file you select in your browser and uses browser memory to render pages and prepare edits. The application does not implement a feature to send that selected PDF to a TephdyPDF document-processing server. Text or image content you add is used by the editor to prepare the document you download. Avoid entering sensitive information unless you have assessed the risks of your device, browser, network, and the website's delivery infrastructure.</p>
+        <p>The editor reads the PDF file you select in your browser and uses browser memory to render pages and prepare edits. The application does not implement a feature to send that selected PDF to a VeloPdf document-processing server. Text or image content you add is used by the editor to prepare the document you download. Avoid entering sensitive information unless you have assessed the risks of your device, browser, network, and the website's delivery infrastructure.</p>
         <h3 class="text-base font-semibold text-white">Website and third-party requests</h3>
         <p>To display and operate the site, your browser requests the website's files and third-party PDF libraries. Web hosting, content-delivery, network, and security providers may receive technical request information such as an IP address, requested resource, timestamp, browser information, or error data as part of delivering or protecting their services. Their processing is governed by their own notices and settings. This project does not currently describe or control those providers' retention practices.</p>
         <h3 class="text-base font-semibold text-white">Storage, tracking, and retention</h3>
@@ -211,20 +211,20 @@
       `,
       legalModal: `
         <h2 class="text-2xl font-bold text-white mb-4">Legal Notice</h2>
-        <p><strong>Service:</strong> TephdyPDF Pro, a browser-based PDF editing utility.</p>
+        <p><strong>Service:</strong> VeloPdf, a browser-based PDF editing utility.</p>
         <p><strong>Publisher name used for this project:</strong> Tephdytech.</p>
         <p><strong>Project attribution:</strong> Joseph Tanay Amandy.</p>
         <h3 class="text-base font-semibold text-white">Publisher information</h3>
         <p>No registered entity name, business registration number, registered office, postal address, or dedicated legal contact has been provided for this project. The names above are project attribution only and should not be read as confirmation of a particular corporate or legal status. A formal public legal notice may require additional publisher details depending on the publisher's location and the locations in which the site is offered.</p>
         <h3 class="text-base font-semibold text-white">Content and responsibility</h3>
         <p>Site text and tools are provided for general informational and document-editing purposes. You are responsible for the content of documents you edit and for verifying the accuracy, completeness, accessibility, signature status, and suitability of any output before relying on or distributing it.</p>
-        <p>Product names, third-party library names, and related marks belong to their respective owners. Third-party services and libraries are not represented as sponsors or endorsers of TephdyPDF Pro. Nothing in this notice limits rights or liabilities that cannot be limited under applicable law.</p>
+        <p>Product names, third-party library names, and related marks belong to their respective owners. Third-party services and libraries are not represented as sponsors or endorsers of VeloPdf. Nothing in this notice limits rights or liabilities that cannot be limited under applicable law.</p>
         <p>For project-related legal questions, use the official channel through which you obtained the software. Do not send confidential documents through public issue trackers or public contact channels.</p>
       `,
       dataProtModal: `
         <h2 class="text-2xl font-bold text-white mb-4">Data Protection Statement</h2>
         <p><strong>Effective date:</strong> November 1, 2026</p>
-        <p>TephdyPDF Pro is designed so that the PDF selected in the editor is processed in your browser rather than submitted to an application backend for editing. This reduces the application's direct handling of document contents; it does not mean that no personal data is processed anywhere in the delivery chain.</p>
+        <p>VeloPdf is designed so that the PDF selected in the editor is processed in your browser rather than submitted to an application backend for editing. This reduces the application's direct handling of document contents; it does not mean that no personal data is processed anywhere in the delivery chain.</p>
         <h3 class="text-base font-semibold text-white">Data, purpose, and handling</h3>
         <p>Document contents and annotations are used locally to render, edit, and export the file at your request. Browser and hosting requests needed to deliver the application and third-party libraries may expose technical connection information to the relevant providers. The app does not currently provide user accounts, a cloud document library, or a mechanism to retrieve a PDF after your session.</p>
         <h3 class="text-base font-semibold text-white">Your responsibilities and rights</h3>
@@ -233,14 +233,14 @@
       `,
       zeroKnowModal: `
         <h2 class="text-2xl font-bold text-white mb-4">Local Processing and Data Architecture</h2>
-        <p>The editor is designed to process the PDF you select in browser memory and does not implement a TephdyPDF cloud account, document upload endpoint, or server-side PDF editing workflow. The application therefore does not receive the selected PDF through an editing API as currently implemented.</p>
+        <p>The editor is designed to process the PDF you select in browser memory and does not implement a VeloPdf cloud account, document upload endpoint, or server-side PDF editing workflow. The application therefore does not receive the selected PDF through an editing API as currently implemented.</p>
         <h3 class="text-base font-semibold text-white">Why “zero-knowledge” is not guaranteed</h3>
         <p>The site and its PDF libraries are delivered over the network, including from third-party content-delivery services. Those services and the website host can observe technical requests needed to load the application. Browser extensions, malware, device administrators, operating systems, crash-reporting tools, or network monitoring may also expose information on your device or connection. The project has not published an independent architecture audit or cryptographic proof.</p>
         <p>For these reasons, this notice describes a local-processing design, not a certified or independently verified zero-knowledge architecture, end-to-end encryption service, or promise of zero cloud exposure. Do not use the application for information whose handling requirements prohibit these residual risks.</p>
       `,
       socModal: `
         <h2 class="text-2xl font-bold text-white mb-4">SOC 2 & GDPR Status</h2>
-        <p>This page does not claim that TephdyPDF Pro or its publisher is SOC 2 certified, has completed a SOC 2 examination, holds a SOC 2 report, or has been independently audited against GDPR requirements. No such certificate, audit report, independent assessment, or data-processing agreement has been provided for this application.</p>
+        <p>This page does not claim that VeloPdf or its publisher is SOC 2 certified, has completed a SOC 2 examination, holds a SOC 2 report, or has been independently audited against GDPR requirements. No such certificate, audit report, independent assessment, or data-processing agreement has been provided for this application.</p>
         <h3 class="text-base font-semibold text-white">GDPR and other privacy laws</h3>
         <p>Whether a privacy law applies, and which party has controller or processor duties, depends on the publisher's and user's circumstances, locations, purposes, and the third-party services involved. Local PDF processing is one design choice; it does not alone establish compliance with GDPR or any other law. Users and organizations must assess their own legal duties, lawful bases, notices, vendor arrangements, transfer rules, security measures, and rights-handling procedures.</p>
         <h3 class="text-base font-semibold text-white">SOC 2</h3>
@@ -248,7 +248,7 @@
       `,
       vulnModal: `
         <h2 class="text-2xl font-bold text-white mb-4">Vulnerability Disclosure</h2>
-        <p>We welcome good-faith reports about security issues affecting TephdyPDF Pro. Before testing, obtain authorization for any system you assess. Limit testing to the minimum needed to demonstrate the issue, avoid accessing or modifying other people's data, and do not degrade service, use social engineering, or publicly disclose an unremediated vulnerability.</p>
+        <p>We welcome good-faith reports about security issues affecting VeloPdf. Before testing, obtain authorization for any system you assess. Limit testing to the minimum needed to demonstrate the issue, avoid accessing or modifying other people's data, and do not degrade service, use social engineering, or publicly disclose an unremediated vulnerability.</p>
         <h3 class="text-base font-semibold text-white">How to report</h3>
         <p>Submit a private report through the official channel where you obtained the project, if that channel supports private security reports. Include a concise description, affected version or page, impact, reproducible steps, and any proposed mitigation. Do not include real personal data, confidential documents, credentials, or unnecessary exploit payloads.</p>
         <h3 class="text-base font-semibold text-white">Handling and scope</h3>
@@ -963,7 +963,7 @@
         
         const a = document.createElement('a');
         a.href = url;
-        a.download = 'tephdypdf-edited-document.pdf';
+        a.download = 'velopdf-edited-document.pdf';
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
