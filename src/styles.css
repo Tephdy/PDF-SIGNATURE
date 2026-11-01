@@ -114,6 +114,115 @@
   border: 1px solid rgba(245, 197, 39, 0.25);
 }
 
+.conversion-card {
+  display: flex;
+  min-height: 12rem;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 1.25rem;
+  border: 1px solid rgba(245, 197, 39, 0.2);
+  border-radius: 1rem;
+  background: linear-gradient(145deg, rgba(28, 27, 21, 0.96), rgba(15, 15, 12, 0.96));
+  text-align: left;
+  transition: border-color 160ms ease, transform 160ms ease, box-shadow 160ms ease;
+}
+
+button.conversion-card:hover,
+button.conversion-card:focus-visible {
+  border-color: rgba(245, 197, 39, 0.75);
+  box-shadow: 0 12px 32px rgba(245, 197, 39, 0.1);
+  transform: translateY(-2px);
+}
+
+.conversion-card:focus-visible {
+  outline: 2px solid #F5C527;
+  outline-offset: 3px;
+}
+
+.conversion-card-icon {
+  display: inline-flex;
+  min-height: 2.5rem;
+  align-items: center;
+  border-radius: 0.65rem;
+  background: rgba(245, 197, 39, 0.14);
+  padding: 0.5rem 0.7rem;
+  color: #F5C527;
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+}
+
+.conversion-card-title {
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.conversion-card-description {
+  color: #a1a1aa;
+  font-size: 0.8rem;
+  line-height: 1.5;
+}
+
+.conversion-card-action,
+.conversion-card-status {
+  margin-top: auto;
+  color: #F5C527;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.conversion-card-unavailable {
+  opacity: 0.72;
+}
+
+.conversion-card-status {
+  color: #a1a1aa;
+}
+
+#conversionToolForm input[type="file"],
+#conversionToolForm select {
+  width: 100%;
+  border: 1px solid rgba(245, 197, 39, 0.3);
+  border-radius: 0.65rem;
+  background: #17160F;
+  padding: 0.7rem;
+  color: #f4f4f5;
+}
+
+#conversionToolForm input[type="file"]::file-selector-button {
+  margin-right: 0.75rem;
+  border: 0;
+  border-radius: 0.45rem;
+  background: #F5C527;
+  padding: 0.45rem 0.65rem;
+  color: #17130A;
+  font-weight: 700;
+}
+
+#conversionToolForm button[type="submit"] {
+  width: 100%;
+  border-radius: 0.7rem;
+  background: #F5C527;
+  padding: 0.8rem 1rem;
+  color: #17130A;
+  font-weight: 800;
+}
+
+#conversionToolForm button[type="submit"]:disabled {
+  cursor: wait;
+  opacity: 0.65;
+}
+
+#conversionToolStatus[data-state="error"] {
+  color: #fca5a5;
+}
+
+#conversionToolStatus[data-state="success"] {
+  color: #fde68a;
+}
+
 .mobile-editor-toolbar,
 .mobile-panel-close,
 .mobile-panel-backdrop {

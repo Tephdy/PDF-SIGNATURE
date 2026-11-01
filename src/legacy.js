@@ -152,7 +152,7 @@
       `,
       featuresModal: `
         <h2 class="text-2xl font-bold text-white mb-4">Features and acceptable use</h2>
-        <p>VeloPdf provides browser-based tools for rendering PDF pages, placing editable text annotations and shapes, adding image-based marks, reordering or deleting pages, and downloading a modified PDF. Availability and behavior may vary with the browser, device, file structure, and loaded third-party libraries.</p>
+        <p>VeloPdf provides browser-based tools for rendering PDF pages as PNG, JPEG, or WebP images, combining PNG/JPEG images into PDFs, merging, splitting, and rotating PDFs, placing text annotations and shapes, and adding image-based marks. PDF-to-Office, Office-to-PDF, and compression services are not configured. Files used by the available tools are processed in your browser.</p>
         <h3 class="text-base font-semibold text-white">Use and responsibility</h3>
         <p>You are responsible for having the rights and authority to access, modify, upload into your browser, and distribute the documents and images you use. Use the tools lawfully, respect privacy, confidentiality, intellectual property and record-retention duties, and obtain any required consent before modifying or sharing another person's document.</p>
         <p>Editing can change page order, remove content, alter appearance, or fail to preserve features such as forms, metadata, accessibility information, embedded files, or digital-signature validity. Work on a copy, inspect every page and the exported file, and retain the original when it matters.</p>
@@ -263,6 +263,255 @@
       modalContent.innerHTML = modalData[modalKey] || '<p>Content not found.</p>';
       modalBackdrop.classList.remove('hidden');
     }
+
+    const conversionToolConfigs = {
+      'pdf-to-images': {
+        title: 'PDF to Images',
+        description: 'Render each page as an image. The images are bundled into a ZIP file.',
+        accept: 'application/pdf,.pdf',
+        multiple: false,
+        button: 'Convert and download ZIP',
+        options: `
+          <label class="block text-xs font-semibold text-gray-300 mb-2" for="conversionFormat">Image format</label>
+          <select id="conversionFormat" name="format">
+            <option value="image/png">PNG</option>
+            <option value="image/jpeg">JPEG</option>
+            <option value="image/webp">WebP</option>
+          </select>
+          <label class="block text-xs font-semibold text-gray-300 mt-4 mb-2" for="conversionScale">Image resolution</label>
+          <select id="conversionScale" name="scale">
+            <option value="1.5">Standard</option>
+            <option value="2" selected>High</option>
+            <option value="3">Maximum</option>
+          </select>
+        `,
+      },
+      'images-to-pdf': {
+        title: 'Images to PDF',
+        description: 'Combine PNG and JPEG images into one PDF, with one image per page.',
+        accept: 'image/png,image/jpeg,.png,.jpg,.jpeg',
+        multiple: true,
+        button: 'Create and download PDF',
+      },
+      'merge-pdf': {
+        title: 'Merge PDF',
+        description: 'Choose two or more PDF files. Pages will be merged in the order shown in the file picker.',
+        accept: 'application/pdf,.pdf',
+        multiple: true,
+        button: 'Merge and download PDF',
+      },
+      'split-pdf': {
+        title: 'Split PDF',
+        description: 'Export each page as a separate PDF in one ZIP archive.',
+        accept: 'application/pdf,.pdf',
+        multiple: false,
+        button: 'Split and download ZIP',
+      },
+      'rotate-pdf': {
+        title: 'Rotate PDF',
+        description: 'Rotate every page and save a separate copy of the PDF.',
+        accept: 'application/pdf,.pdf',
+        multiple: false,
+        button: 'Rotate and download PDF',
+        options: `
+          <label class="block text-xs font-semibold text-gray-300 mb-2" for="conversionRotation">Rotation</label>
+          <select id="conversionRotation" name="rotation">
+            <option value="90">90° clockwise</option>
+            <option value="180">180°</option>
+            <option value="270">270° clockwise</option>
+          </select>
+        `,
+      },
+    };
+
+    function openTool(toolKey) {
+      const tool = conversionToolConfigs[toolKey];
+      if (!tool) {
+        console.error(`Unknown conversion tool: ${toolKey}`);
+        return;
+      }
+
+      const modalContent = document.getElementById('modalContent');
+      modalContent.innerHTML = `
+        <h2 class="text-2xl font-bold text-white mb-2">${tool.title}</h2>
+        <p>${tool.description}</p>
+        <form id="conversionToolForm" class="space-y-4 mt-5">
+          <label class="block text-xs font-semibold text-gray-300" for="conversionFiles">Select file${tool.multiple ? 's' : ''}</label>
+          <input id="conversionFiles" name="files" type="file" accept="${tool.accept}" ${tool.multiple ? 'multiple' : ''} required />
+          ${tool.options || ''}
+          <p class="text-xs text-gray-500">Files are processed in this browser and are not uploaded.</p>
+          <button type="submit">${tool.button}</button>
+          <p id="conversionToolStatus" class="min-h-5 text-xs" aria-live="polite"></p>
+        </form>
+      `;
+      document.getElementById('modalBackdrop').classList.remove('hidden');
+
+      const form = document.getElementById('conversionToolForm');
+      form.addEventListener('submit', async event => {
+        event.preventDefault();
+        const files = [...form.elements.files.files];
+        const submitButton = form.querySelector('button[type="submit"]');
+        submitButton.disabled = true;
+        setConversionStatus('Processing locally…');
+
+        try {
+          await runConversionTool(toolKey, files, form);
+          setConversionStatus('Done. Your download is ready.', 'success');
+        } catch (error) {
+          console.error(`Unable to run ${toolKey}:`, error);
+          setConversionStatus(error.message || 'The conversion failed. Check that the selected file is valid.', 'error');
+        } finally {
+          submitButton.disabled = false;
+        }
+      });
+
+      document.getElementById('conversionFiles').focus();
+    }
+
+    window.openTool = openTool;
+
+    function setConversionStatus(message, state = '') {
+      const status = document.getElementById('conversionToolStatus');
+      if (!status) return;
+      status.textContent = message;
+      status.dataset.state = state;
+    }
+
+    function getSafeFileName(fileName) {
+      return fileName.replace(/\.[^.]+$/, '').replace(/[<>:"/\\|?*\u0000-\u001F]/g, '_').slice(0, 100) || 'document';
+    }
+
+    function downloadBlob(blob, fileName) {
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = fileName;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+    }
+
+    function requireFiles(files, type, minimum = 1) {
+      if (files.length < minimum) {
+        throw new Error(`Select at least ${minimum} ${type === 'pdf' ? 'PDF files' : 'image files'}.`);
+      }
+      const isValid = file => {
+        const name = file.name.toLowerCase();
+        return type === 'pdf'
+          ? file.type === 'application/pdf' || name.endsWith('.pdf')
+          : file.type === 'image/png' || file.type === 'image/jpeg' ||
+            /\.(png|jpe?g)$/.test(name);
+      };
+      if (files.some(file => !isValid(file))) {
+        throw new Error(type === 'pdf'
+          ? 'Select only PDF files.'
+          : 'Select only PNG or JPEG images.');
+      }
+    }
+
+    async function runConversionTool(toolKey, files, form) {
+      const { PDFDocument, degrees } = PDFLib;
+      const zip = new JSZip();
+
+      if (toolKey === 'pdf-to-images') {
+        requireFiles(files, 'pdf');
+        const format = form.elements.format.value;
+        const extension = { 'image/png': 'png', 'image/jpeg': 'jpg', 'image/webp': 'webp' }[format];
+        const scale = Number(form.elements.scale.value);
+        const pdf = await pdfjsLib.getDocument({ data: await files[0].arrayBuffer() }).promise;
+
+        for (let pageNumber = 1; pageNumber <= pdf.numPages; pageNumber++) {
+          setConversionStatus(`Rendering page ${pageNumber} of ${pdf.numPages}…`);
+          const page = await pdf.getPage(pageNumber);
+          const viewport = page.getViewport({ scale });
+          const canvas = document.createElement('canvas');
+          canvas.width = Math.ceil(viewport.width);
+          canvas.height = Math.ceil(viewport.height);
+          const context = canvas.getContext('2d');
+          if (!context) throw new Error('Your browser could not create an image canvas.');
+
+          await page.render({
+            canvasContext: context,
+            viewport,
+            background: '#ffffff',
+          }).promise;
+
+          const imageBlob = await new Promise((resolve, reject) => {
+            canvas.toBlob(blob => blob ? resolve(blob) : reject(new Error('The browser could not encode this page.')), format, 0.92);
+          });
+          if (imageBlob.type !== format) {
+            throw new Error(`${extension.toUpperCase()} export is not supported by this browser.`);
+          }
+
+          const pageLabel = String(pageNumber).padStart(3, '0');
+          zip.file(`${getSafeFileName(files[0].name)}-page-${pageLabel}.${extension}`, imageBlob);
+          page.cleanup();
+          canvas.width = 0;
+          canvas.height = 0;
+        }
+
+        const archive = await zip.generateAsync({ type: 'blob', compression: 'STORE' });
+        downloadBlob(archive, `${getSafeFileName(files[0].name)}-images.zip`);
+        return;
+      }
+
+      if (toolKey === 'images-to-pdf') {
+        requireFiles(files, 'image');
+        const output = await PDFDocument.create();
+        for (let index = 0; index < files.length; index++) {
+          setConversionStatus(`Adding image ${index + 1} of ${files.length}…`);
+          const imageBytes = await files[index].arrayBuffer();
+          const image = files[index].type === 'image/png' || /\.png$/i.test(files[index].name)
+            ? await output.embedPng(imageBytes)
+            : await output.embedJpg(imageBytes);
+          const page = output.addPage([image.width, image.height]);
+          page.drawImage(image, { x: 0, y: 0, width: image.width, height: image.height });
+        }
+        downloadBlob(new Blob([await output.save()], { type: 'application/pdf' }), 'images.pdf');
+        return;
+      }
+
+      if (toolKey === 'merge-pdf') {
+        requireFiles(files, 'pdf', 2);
+        const output = await PDFDocument.create();
+        for (let index = 0; index < files.length; index++) {
+          setConversionStatus(`Merging file ${index + 1} of ${files.length}…`);
+          const source = await PDFDocument.load(await files[index].arrayBuffer());
+          const pages = await output.copyPages(source, source.getPageIndices());
+          pages.forEach(page => output.addPage(page));
+        }
+        downloadBlob(new Blob([await output.save()], { type: 'application/pdf' }), 'merged.pdf');
+        return;
+      }
+
+      if (toolKey === 'split-pdf') {
+        requireFiles(files, 'pdf');
+        const source = await PDFDocument.load(await files[0].arrayBuffer());
+        const pageCount = source.getPageCount();
+        for (let index = 0; index < pageCount; index++) {
+          setConversionStatus(`Exporting page ${index + 1} of ${pageCount}…`);
+          const output = await PDFDocument.create();
+          const [page] = await output.copyPages(source, [index]);
+          output.addPage(page);
+          const pageLabel = String(index + 1).padStart(3, '0');
+          zip.file(`${getSafeFileName(files[0].name)}-page-${pageLabel}.pdf`, await output.save());
+        }
+        downloadBlob(await zip.generateAsync({ type: 'blob', compression: 'STORE' }), `${getSafeFileName(files[0].name)}-pages.zip`);
+        return;
+      }
+
+      if (toolKey === 'rotate-pdf') {
+        requireFiles(files, 'pdf');
+        const output = await PDFDocument.load(await files[0].arrayBuffer());
+        const rotation = Number(form.elements.rotation.value);
+        output.getPages().forEach(page => {
+          page.setRotation(degrees(page.getRotation().angle + rotation));
+        });
+        downloadBlob(new Blob([await output.save()], { type: 'application/pdf' }), `${getSafeFileName(files[0].name)}-rotated.pdf`);
+      }
+    }
+
     function closeModal() {
       document.getElementById('modalBackdrop').classList.add('hidden');
     }

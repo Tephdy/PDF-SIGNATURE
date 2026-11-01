@@ -41,7 +41,97 @@
           <span>Start Editing Now</span>
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
         </button>
+        <a href="#conversionTools" class="w-full sm:w-auto text-sm font-semibold text-yellow-300 hover:text-yellow-200 px-5 py-3 transition">Explore PDF tools ↓</a>
       </div>
+    </section>
+
+    <section id="conversionTools" class="w-full max-w-7xl mx-auto px-6 pb-20">
+      <div class="mb-8 text-center">
+        <p class="text-xs font-bold uppercase tracking-[0.2em] text-yellow-400 mb-3">Fast, private, in your browser</p>
+        <h2 class="text-3xl md:text-4xl font-black text-white mb-3">More ways to work with PDFs</h2>
+        <p class="text-sm md:text-base text-gray-400 max-w-2xl mx-auto">Available tools convert and organize documents on your device. Your files stay in your browser.</p>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <button onclick="openTool('pdf-to-images')" class="conversion-card">
+          <span class="conversion-card-icon">PDF → PNG</span>
+          <span class="conversion-card-title">PDF to Images</span>
+          <span class="conversion-card-description">Export every page as PNG, JPEG, or WebP images in one ZIP.</span>
+          <span class="conversion-card-action">Convert PDF <span aria-hidden="true">→</span></span>
+        </button>
+        <button onclick="openTool('images-to-pdf')" class="conversion-card">
+          <span class="conversion-card-icon">IMG → PDF</span>
+          <span class="conversion-card-title">Images to PDF</span>
+          <span class="conversion-card-description">Combine PNG and JPEG images into a PDF, one image per page.</span>
+          <span class="conversion-card-action">Create PDF <span aria-hidden="true">→</span></span>
+        </button>
+        <button onclick="openTool('merge-pdf')" class="conversion-card">
+          <span class="conversion-card-icon">PDF + PDF</span>
+          <span class="conversion-card-title">Merge PDF</span>
+          <span class="conversion-card-description">Combine multiple PDF files in the order you select them.</span>
+          <span class="conversion-card-action">Merge files <span aria-hidden="true">→</span></span>
+        </button>
+        <button onclick="openTool('split-pdf')" class="conversion-card">
+          <span class="conversion-card-icon">PDF ÷</span>
+          <span class="conversion-card-title">Split PDF</span>
+          <span class="conversion-card-description">Save each page as a separate PDF, bundled together in a ZIP.</span>
+          <span class="conversion-card-action">Split pages <span aria-hidden="true">→</span></span>
+        </button>
+        <button onclick="openTool('rotate-pdf')" class="conversion-card">
+          <span class="conversion-card-icon">↻ PDF</span>
+          <span class="conversion-card-title">Rotate PDF</span>
+          <span class="conversion-card-description">Rotate all pages by 90°, 180°, or 270° and download a copy.</span>
+          <span class="conversion-card-action">Rotate pages <span aria-hidden="true">→</span></span>
+        </button>
+        <button onclick="enterEditor()" class="conversion-card">
+          <span class="conversion-card-icon">EDIT</span>
+          <span class="conversion-card-title">Edit PDF</span>
+          <span class="conversion-card-description">Add text, signatures, shapes, and images; reorder or delete pages.</span>
+          <span class="conversion-card-action">Open editor <span aria-hidden="true">→</span></span>
+        </button>
+        <div class="conversion-card conversion-card-unavailable" aria-label="PDF to Word conversion unavailable">
+          <span class="conversion-card-icon">PDF → DOCX</span>
+          <span class="conversion-card-title">PDF to Word</span>
+          <span class="conversion-card-description">Convert PDF pages to an editable Word document.</span>
+          <span class="conversion-card-status">SOON...</span>
+        </div>
+        <div class="conversion-card conversion-card-unavailable" aria-label="PDF to Excel conversion unavailable">
+          <span class="conversion-card-icon">PDF → XLSX</span>
+          <span class="conversion-card-title">PDF to Excel</span>
+          <span class="conversion-card-description">Extract tables and data from PDF files into a spreadsheet.</span>
+          <span class="conversion-card-status">SOON...</span>
+        </div>
+        <div class="conversion-card conversion-card-unavailable" aria-label="PDF to PowerPoint conversion unavailable">
+          <span class="conversion-card-icon">PDF → PPTX</span>
+          <span class="conversion-card-title">PDF to PowerPoint</span>
+          <span class="conversion-card-description">Turn PDF pages into an editable presentation.</span>
+          <span class="conversion-card-status">SOON...</span>
+        </div>
+        <div class="conversion-card conversion-card-unavailable" aria-label="Word to PDF conversion unavailable">
+          <span class="conversion-card-icon">DOCX → PDF</span>
+          <span class="conversion-card-title">Word to PDF</span>
+          <span class="conversion-card-description">Convert Word documents into ready-to-share PDFs.</span>
+          <span class="conversion-card-status">SOON...</span>
+        </div>
+        <div class="conversion-card conversion-card-unavailable" aria-label="Excel to PDF conversion unavailable">
+          <span class="conversion-card-icon">XLSX → PDF</span>
+          <span class="conversion-card-title">Excel to PDF</span>
+          <span class="conversion-card-description">Convert spreadsheets into a PDF document.</span>
+          <span class="conversion-card-status">SOON...</span>
+        </div>
+        <div class="conversion-card conversion-card-unavailable" aria-label="PowerPoint to PDF conversion unavailable">
+          <span class="conversion-card-icon">PPTX → PDF</span>
+          <span class="conversion-card-title">PowerPoint to PDF</span>
+          <span class="conversion-card-description">Convert presentations into a PDF document.</span>
+          <span class="conversion-card-status">SOON...</span>
+        </div>
+        <div class="conversion-card conversion-card-unavailable" aria-label="PDF compression unavailable">
+          <span class="conversion-card-icon">PDF ↓</span>
+          <span class="conversion-card-title">Compress PDF</span>
+          <span class="conversion-card-description">Reliable PDF compression needs an optimizer that is not included in this browser app.</span>
+          <span class="conversion-card-status">SOON...</span>
+        </div>
+      </div>
+      <p class="mt-5 text-center text-xs text-gray-500">PDF to Word/Excel/PowerPoint and Office to PDF are not available without a conversion provider. No files are sent to a provider by this page.</p>
     </section>
 
     <!-- Footer -->

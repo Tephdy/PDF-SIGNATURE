@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { createRoot } from 'react-dom/client';
 import parse from 'html-react-parser';
+import JSZip from 'jszip';
 import { Analytics } from '@vercel/analytics/react';
 import legacyMarkup from './legacy-markup.html?raw';
 import './styles.css';
@@ -20,6 +21,7 @@ const reactMarkup = legacyMarkup
 
 function App() {
   useEffect(() => {
+    window.JSZip = JSZip;
     const legacyScript = document.createElement('script');
     legacyScript.src = new URL('./legacy.js', import.meta.url).href;
     legacyScript.async = true;
