@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { createRoot } from 'react-dom/client';
 import parse from 'html-react-parser';
+import { Analytics } from '@vercel/analytics/react';
 import legacyMarkup from './legacy-markup.html?raw';
 import './styles.css';
 
@@ -47,6 +48,7 @@ function App() {
       onClick={handleLegacyClick}
     >
       {parse(reactMarkup)}
+      <Analytics />
     </div>
   );
 }
