@@ -70,10 +70,39 @@
       appWorkspace.classList.add('hidden');
       appWorkspace.classList.remove('flex');
       landingView.classList.remove('hidden');
+      closeMobilePanel();
     }
 
     function scrollToTop() {
       window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function closeMobilePanel() {
+      document.getElementById('leftSidebar').classList.remove('mobile-panel-open');
+      document.getElementById('rightSidebar').classList.remove('mobile-panel-open');
+      document.getElementById('mobilePanelBackdrop').classList.add('hidden');
+      document.querySelectorAll('#mobileEditorToolbar button').forEach(button => {
+        button.setAttribute('aria-expanded', 'false');
+      });
+    }
+
+    function toggleMobilePanel(panel) {
+      const sidebar = document.getElementById(panel === 'pages' ? 'leftSidebar' : 'rightSidebar');
+      const toolbarButton = document.querySelector(
+        `#mobileEditorToolbar button[aria-controls="${sidebar.id}"]`
+      );
+      const wasOpen = sidebar.classList.contains('mobile-panel-open');
+      closeMobilePanel();
+
+      if (wasOpen) return;
+
+      sidebar.classList.add('mobile-panel-open');
+      document.getElementById('mobilePanelBackdrop').classList.remove('hidden');
+      toolbarButton.setAttribute('aria-expanded', 'true');
+
+      if (panel === 'tools') {
+        setTimeout(resizeCanvas, 240);
+      }
     }
 
     // ===== TAB SWITCHER =====
@@ -93,6 +122,7 @@
       if (tabId === 'textTab') document.getElementById('btnTextTab').className = 'py-2 rounded-lg bg-[#CF0C5A] text-white transition';
       if (tabId === 'shapeTab') document.getElementById('btnShapeTab').className = 'py-2 rounded-lg bg-[#CF0C5A] text-white transition';
       if (tabId === 'imageTab') document.getElementById('btnImageTab').className = 'py-2 rounded-lg bg-[#CF0C5A] text-white transition';
+      if (tabId === 'signTab') requestAnimationFrame(resizeCanvas);
     }
 
     // ===== SHAPE SELECTION =====
@@ -245,6 +275,7 @@
     const fileInput = document.getElementById('fileInput');
     const uploadPlaceholder = document.getElementById('uploadPlaceholder');
     const pdfViewer = document.getElementById('pdfViewer');
+    const mainWorkspace = document.getElementById('mainWorkspace');
     
     const leftSidebar = document.getElementById('leftSidebar');
     const rightSidebar = document.getElementById('rightSidebar');
@@ -279,6 +310,7 @@
     let originalPdfArrayBuffer = null;
     let pdfDoc = null;
     let activePageContainer = null;
+    let lastPdfViewportWidth = 0;
     
     let isDrawing = false;
     let lastX = 0, lastY = 0;
@@ -302,7 +334,10 @@
         
         leftSidebar.classList.remove('hidden'); leftSidebar.classList.add('flex');
         rightSidebar.classList.remove('hidden'); rightSidebar.classList.add('flex');
+        appWorkspace.classList.add('has-document');
+        closeMobilePanel();
         resetBtn.classList.remove('hidden');
+        lastPdfViewportWidth = mainWorkspace.clientWidth;
 
         pdfViewer.innerHTML = '<div class="text-gray-400 font-medium mt-10">Loading PDF...</div>';
         thumbnailContainer.innerHTML = '';
@@ -319,19 +354,52 @@
       }
     }
 
-    async function renderPDFViewer() {
+    async function renderPDFViewer(preserveAnnotations = false) {
+      const activePageNum = activePageContainer
+        ? Number(activePageContainer.dataset.pageNum)
+        : 1;
+      const preservedAnnotations = preserveAnnotations
+        ? [...pdfViewer.querySelectorAll('.annotation-overlay')].map(overlay => {
+          const overlayRect = overlay.getBoundingClientRect();
+          const centerX = overlayRect.left + overlayRect.width / 2;
+          const centerY = overlayRect.top + overlayRect.height / 2;
+          const page = [...pdfViewer.querySelectorAll('.pdf-page-container')].find(container => {
+            const pageRect = container.getBoundingClientRect();
+            return centerX >= pageRect.left && centerX <= pageRect.right &&
+              centerY >= pageRect.top && centerY <= pageRect.bottom;
+          }) || pdfViewer.querySelector('.pdf-page-container');
+
+          if (!page) return null;
+
+          const pageRect = page.getBoundingClientRect();
+          const scale = parseFloat(page.dataset.scale) || 1.5;
+          return {
+            element: overlay,
+            pageNum: Number(page.dataset.pageNum),
+            x: (overlayRect.left - pageRect.left) / scale,
+            y: (overlayRect.top - pageRect.top) / scale,
+            width: overlayRect.width / scale,
+            height: overlayRect.height / scale,
+            textHeight: overlay.style.height,
+          };
+        }).filter(Boolean)
+        : [];
+
       pdfViewer.innerHTML = '';
       thumbnailContainer.innerHTML = '';
       pdfViewer.style.position = 'relative';
 
       for (let i = 1; i <= pdfDoc.numPages; i++) {
         const page = await pdfDoc.getPage(i);
-        const scale = 1.5;
+        const baseViewport = page.getViewport({ scale: 1 });
+        const availableWidth = Math.max(240, mainWorkspace.clientWidth - 32);
+        const scale = Math.min(1.5, availableWidth / baseViewport.width);
         const viewport = page.getViewport({ scale });
         
         const pageContainer = document.createElement('div');
         pageContainer.className = 'pdf-page-container';
         pageContainer.dataset.pageNum = i;
+        pageContainer.dataset.scale = scale;
         
         const canvas = document.createElement('canvas');
         canvas.width = viewport.width;
@@ -343,7 +411,7 @@
         const ctx = canvas.getContext('2d');
         await page.render({ canvasContext: ctx, viewport }).promise;
 
-        pageContainer.addEventListener('mousedown', () => {
+        pageContainer.addEventListener('pointerdown', () => {
            document.querySelectorAll('.pdf-page-container').forEach(el => el.classList.remove('active-page'));
            pageContainer.classList.add('active-page');
            activePageContainer = pageContainer;
@@ -420,16 +488,35 @@
 
         thumbCanvas.addEventListener('click', () => {
           pageContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
-          pageContainer.dispatchEvent(new Event('mousedown'));
+          pageContainer.dispatchEvent(new Event('pointerdown'));
+          closeMobilePanel();
         });
 
         thumbnailContainer.appendChild(thumbWrapper);
       }
+
+      preservedAnnotations.forEach(annotation => {
+        const page = pdfViewer.querySelector(
+          `.pdf-page-container[data-page-num="${annotation.pageNum}"]`
+        );
+        if (!page) return;
+
+        const scale = parseFloat(page.dataset.scale) || 1.5;
+        annotation.element.style.left = `${page.offsetLeft + annotation.x * scale}px`;
+        annotation.element.style.top = `${page.offsetTop + annotation.y * scale}px`;
+        annotation.element.style.width = `${annotation.width * scale}px`;
+        annotation.element.style.height = annotation.textHeight === 'auto'
+          ? 'auto'
+          : `${annotation.height * scale}px`;
+        pdfViewer.appendChild(annotation.element);
+      });
       
-      const firstPage = pdfViewer.querySelector('.pdf-page-container');
-      if(firstPage) {
-          firstPage.classList.add('active-page');
-          activePageContainer = firstPage;
+      const activePage = pdfViewer.querySelector(
+        `.pdf-page-container[data-page-num="${activePageNum}"]`
+      ) || pdfViewer.querySelector('.pdf-page-container');
+      if (activePage) {
+          activePage.classList.add('active-page');
+          activePageContainer = activePage;
       }
       setTimeout(resizeCanvas, 100);
     }
@@ -478,6 +565,8 @@
       pdfViewer.classList.add('hidden');
       leftSidebar.classList.add('hidden'); leftSidebar.classList.remove('flex');
       rightSidebar.classList.add('hidden'); rightSidebar.classList.remove('flex');
+      appWorkspace.classList.remove('has-document');
+      closeMobilePanel();
       resetBtn.classList.add('hidden');
       fileInput.value = '';
       activePageContainer = null;
@@ -488,8 +577,18 @@
     function resizeCanvas() {
       if (signatureCanvas.offsetParent === null) return;
       const rect = signatureCanvas.getBoundingClientRect();
-      signatureCanvas.width = rect.width;
-      signatureCanvas.height = rect.height;
+      const width = Math.round(rect.width);
+      const height = Math.round(rect.height);
+      if (signatureCanvas.width === width && signatureCanvas.height === height) return;
+
+      const previousCanvas = document.createElement('canvas');
+      previousCanvas.width = signatureCanvas.width;
+      previousCanvas.height = signatureCanvas.height;
+      previousCanvas.getContext('2d').drawImage(signatureCanvas, 0, 0);
+
+      signatureCanvas.width = width;
+      signatureCanvas.height = height;
+      sigCtx.drawImage(previousCanvas, 0, 0, width, height);
       updateCanvasStyle();
     }
     function updateCanvasStyle() {
@@ -499,6 +598,21 @@
       sigCtx.lineWidth = currentLineWidth;
     }
     window.addEventListener('resize', resizeCanvas);
+    let pdfResizeTimeout;
+    window.addEventListener('resize', () => {
+      clearTimeout(pdfResizeTimeout);
+      const currentWidth = mainWorkspace.clientWidth;
+      if (!pdfDoc || !appWorkspace.classList.contains('has-document') ||
+        Math.abs(currentWidth - lastPdfViewportWidth) < 1) return;
+
+      lastPdfViewportWidth = currentWidth;
+      pdfResizeTimeout = setTimeout(() => {
+        renderPDFViewer(true).catch(error => {
+          console.error('Unable to resize PDF preview:', error);
+          alert('Unable to resize the PDF preview.');
+        });
+      }, 250);
+    });
 
     lineWidthSlider.addEventListener('input', (e) => {
       currentLineWidth = parseFloat(e.target.value);
@@ -560,7 +674,7 @@
 
       deleteBtn.addEventListener('click', () => overlay.remove());
 
-      overlay.addEventListener('mousedown', (e) => {
+      overlay.addEventListener('pointerdown', (e) => {
         if (e.target.classList.contains('resize-handle') || e.target.classList.contains('delete-btn') || e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
         if (e.button !== 0) return;
         e.preventDefault();
@@ -571,7 +685,7 @@
         const dragStartX = (e.clientX - viewerRect.left) - overlay.offsetLeft;
         const dragStartY = (e.clientY - viewerRect.top) - overlay.offsetTop;
 
-        function onMouseMove(moveEvent) {
+        function onPointerMove(moveEvent) {
           if (!activeOverlay) return;
           let newX = (moveEvent.clientX - viewerRect.left) - dragStartX;
           let newY = (moveEvent.clientY - viewerRect.top) - dragStartY;
@@ -581,17 +695,17 @@
           overlay.style.top = newY + 'px';
         }
 
-        function onMouseUp() {
-          window.removeEventListener('mousemove', onMouseMove);
-          window.removeEventListener('mouseup', onMouseUp);
+        function onPointerUp() {
+          window.removeEventListener('pointermove', onPointerMove);
+          window.removeEventListener('pointerup', onPointerUp);
         }
 
-        window.addEventListener('mousemove', onMouseMove);
-        window.addEventListener('mouseup', onMouseUp);
+        window.addEventListener('pointermove', onPointerMove);
+        window.addEventListener('pointerup', onPointerUp);
       });
 
       if (resizeHandle) {
-        resizeHandle.addEventListener('mousedown', (e) => {
+        resizeHandle.addEventListener('pointerdown', (e) => {
           if (e.button !== 0) return;
           e.preventDefault();
           e.stopPropagation();
@@ -611,12 +725,12 @@
           }
 
           function onResizeUp() {
-            window.removeEventListener('mousemove', onResizeMove);
-            window.removeEventListener('mouseup', onResizeUp);
+            window.removeEventListener('pointermove', onResizeMove);
+            window.removeEventListener('pointerup', onResizeUp);
           }
 
-          window.addEventListener('mousemove', onResizeMove);
-          window.addEventListener('mouseup', onResizeUp);
+          window.addEventListener('pointermove', onResizeMove);
+          window.addEventListener('pointerup', onResizeUp);
         });
       }
     }
@@ -793,7 +907,7 @@
           const relativeX = rect.left - pageRect.left;
           const relativeY = rect.top - pageRect.top;
 
-          const scale = 1.5;
+          const scale = parseFloat(targetPageContainer.dataset.scale) || 1.5;
           const widthPdf = rect.width / scale;
           const heightPdf = rect.height / scale;
           const xPdf = relativeX / scale;

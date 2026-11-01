@@ -107,6 +107,8 @@
       </div>
     </header>
 
+    <button id="mobilePanelBackdrop" onclick="closeMobilePanel()" class="mobile-panel-backdrop hidden" aria-label="Close panel"></button>
+
     <!-- Main Layout -->
     <div class="flex flex-1 overflow-hidden relative">
 
@@ -114,7 +116,10 @@
       <aside id="leftSidebar" class="w-48 bg-[#120711]/90 border-r border-pink-900/30 flex-col shrink-0 z-10 hidden h-[calc(100vh-4rem)]">
         <div class="p-3 border-b border-pink-900/30 text-xs font-semibold text-pink-400 uppercase tracking-wider shrink-0 bg-[#0b0509] flex justify-between items-center">
           <span>Pages</span>
-          <span id="pageCountBadge" class="text-[10px] bg-pink-950 text-pink-300 px-1.5 py-0.5 rounded border border-pink-800/50">0</span>
+          <div class="flex items-center gap-2">
+            <span id="pageCountBadge" class="text-[10px] bg-pink-950 text-pink-300 px-1.5 py-0.5 rounded border border-pink-800/50">0</span>
+            <button onclick="closeMobilePanel()" class="mobile-panel-close" aria-label="Close pages panel">×</button>
+          </div>
         </div>
         <div id="thumbnailContainer" class="flex-1 overflow-y-auto p-4 space-y-4">
           <!-- Thumbnails injected here -->
@@ -151,6 +156,7 @@
         <!-- Sidebar Header -->
         <div class="p-4 border-b border-pink-900/30 flex items-center justify-between shrink-0 bg-[#0b0509]">
           <h2 class="text-lg font-bold text-white">Editor Suite</h2>
+          <button onclick="closeMobilePanel()" class="mobile-panel-close" aria-label="Close editor tools">×</button>
         </div>
 
         <!-- Scrollable Tool Panel Container -->
@@ -290,6 +296,17 @@
       </aside>
 
     </div>
+
+    <nav id="mobileEditorToolbar" class="mobile-editor-toolbar" aria-label="PDF editor panels">
+      <button onclick="toggleMobilePanel('pages')" aria-controls="leftSidebar" aria-expanded="false">
+        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5h16M4 12h16M4 19h16"></path></svg>
+        <span>Pages</span>
+      </button>
+      <button onclick="toggleMobilePanel('tools')" aria-controls="rightSidebar" aria-expanded="false">
+        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 16v-2m8-6h-2M6 12H4m13.657-5.657l-1.414 1.414M7.757 16.243l-1.414 1.414m11.314 0l-1.414-1.414M7.757 7.757L6.343 6.343"></path></svg>
+        <span>Tools & Save</span>
+      </button>
+    </nav>
   </div>
 
   <!-- ================= MODAL DIALOGS ================= -->
