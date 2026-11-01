@@ -1,0 +1,305 @@
+<!-- ================= LIVE BACKGROUND ANIMATION CANVAS ================= -->
+  <canvas id="bgCanvas" class="absolute inset-0 pointer-events-none z-0 opacity-60"></canvas>
+
+  <!-- ================= LANDING PAGE VIEW ================= -->
+  <div id="landingView" class="absolute inset-0 z-10 flex flex-col overflow-y-auto">
+    <!-- Navbar -->
+    <header class="w-full px-6 py-4 flex items-center justify-between border-b border-pink-900/30 bg-[#0b0509]/80 backdrop-blur-md sticky top-0 z-30">
+      <div class="flex items-center space-x-3 cursor-pointer" onclick="scrollToTop()">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-[#CF0C5A] to-pink-700 flex items-center justify-center shadow-lg shadow-[#CF0C5A]/30">
+          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
+        </div>
+        <span class="text-xl font-extrabold tracking-tight bg-gradient-to-r from-white via-pink-200 to-pink-400 bg-clip-text text-transparent">TephdyPDF Pro</span>
+      </div>
+      <nav class="hidden md:flex items-center space-x-8 text-sm font-medium text-gray-300">
+        <button onclick="openModal('featuresModal')" class="hover:text-[#CF0C5A] transition">Features</button>
+        <button onclick="openModal('securityModal')" class="hover:text-[#CF0C5A] transition">Security</button>
+        <button onclick="openModal('complianceModal')" class="hover:text-[#CF0C5A] transition">Compliance</button>
+        <button onclick="openModal('aboutModal')" class="hover:text-[#CF0C5A] transition">About</button>
+      </nav>
+      <div>
+        <button onclick="enterEditor()" class="bg-gradient-to-r from-[#CF0C5A] to-pink-600 hover:from-pink-600 hover:to-pink-700 text-white font-semibold px-5 py-2.5 rounded-xl shadow-lg shadow-[#CF0C5A]/30 transition transform hover:-translate-y-0.5">
+          Launch Full Editor
+        </button>
+      </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="flex-1 flex flex-col items-center justify-center text-center px-6 py-20 max-w-4xl mx-auto my-auto">
+      <div class="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-pink-950/60 border border-pink-800/40 text-pink-300 text-xs font-semibold mb-6 shadow-inner">
+        <span class="w-2 h-2 rounded-full bg-[#CF0C5A] animate-pulse"></span>
+        <span>All-in-One Client-Side PDF Suite: Text, Shapes, Images, Signatures & Page Control</span>
+      </div>
+      <h1 class="text-5xl md:text-7xl font-black tracking-tight mb-6 leading-tight">
+        Edit, Annotate & Sign PDFs <br><span class="bg-gradient-to-r from-[#CF0C5A] via-pink-400 to-rose-300 bg-clip-text text-transparent">Directly in Browser</span>
+      </h1>
+      <p class="text-lg md:text-xl text-gray-300 mb-10 max-w-2xl leading-relaxed">
+        Add custom text boxes, vector shapes, embedded images, and signatures. Reorder or delete pages instantly with zero server uploads.
+      </p>
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-4 w-full max-w-md">
+        <button onclick="enterEditor()" class="w-full sm:w-auto bg-gradient-to-r from-[#CF0C5A] to-pink-600 hover:from-pink-600 hover:to-pink-700 text-white font-bold py-4 px-8 rounded-2xl shadow-xl shadow-[#CF0C5A]/40 transition transform hover:-translate-y-1 text-base flex items-center justify-center space-x-2">
+          <span>Start Editing Now</span>
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+        </button>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="w-full border-t border-pink-900/30 bg-[#0b0509]/90 py-12 px-6 mt-auto">
+      <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8 text-sm">
+        <div>
+          <div class="flex items-center space-x-2 mb-4">
+            <div class="w-7 h-7 rounded-lg bg-[#CF0C5A] flex items-center justify-center">
+              <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
+            </div>
+            <span class="font-bold text-base text-white">TephdyPDF Pro</span>
+          </div>
+          <p class="text-gray-400 text-xs leading-relaxed">
+            Edit and sign PDF documents in your browser with tools designed to keep document processing on your device.
+          </p>
+        </div>
+        <div>
+          <h4 class="font-semibold text-gray-200 mb-3 uppercase tracking-wider text-xs">Legal & Compliance</h4>
+          <ul class="space-y-2 text-gray-400 text-xs">
+            <li><button onclick="openModal('termsModal')" class="hover:text-[#CF0C5A] transition">Terms of Service</button></li>
+            <li><button onclick="openModal('privacyModal')" class="hover:text-[#CF0C5A] transition">Privacy Policy</button></li>
+            <li><button onclick="openModal('cookieModal')" class="hover:text-[#CF0C5A] transition">Cookie Regulations</button></li>
+            <li><button onclick="openModal('legalModal')" class="hover:text-[#CF0C5A] transition">Legal Notice</button></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-semibold text-gray-200 mb-3 uppercase tracking-wider text-xs">Security & Protection</h4>
+          <ul class="space-y-2 text-gray-400 text-xs">
+            <li><button onclick="openModal('dataProtModal')" class="hover:text-[#CF0C5A] transition">Data Protection Statement</button></li>
+            <li><button onclick="openModal('zeroKnowModal')" class="hover:text-[#CF0C5A] transition">Zero-Knowledge Architecture</button></li>
+            <li><button onclick="openModal('socModal')" class="hover:text-[#CF0C5A] transition">SOC 2 & GDPR Status</button></li>
+            <li><button onclick="openModal('vulnModal')" class="hover:text-[#CF0C5A] transition">Vulnerability Disclosure</button></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-semibold text-gray-200 mb-3 uppercase tracking-wider text-xs">Platform</h4>
+          <ul class="space-y-2 text-gray-400 text-xs">
+            <li><button onclick="openModal('featuresModal')" class="hover:text-[#CF0C5A] transition">Features</button></li>
+            <li><button onclick="openModal('securityModal')" class="hover:text-[#CF0C5A] transition">Security</button></li>
+            <li><button onclick="openModal('aboutModal')" class="hover:text-[#CF0C5A] transition">About Tephdytech</button></li>
+          </ul>
+        </div>
+      </div>
+      <div class="max-w-7xl mx-auto mt-8 pt-6 border-t border-pink-900/20 text-center text-xs text-gray-500">
+        &copy; 2026 Tephdytech by Joseph Tanay Amandy. All rights reserved.
+      </div>
+    </footer>
+  </div>
+
+  <!-- ================= APP WORKSPACE VIEW (Hidden by default) ================= -->
+  <div id="appWorkspace" class="absolute inset-0 z-20 flex-col overflow-hidden hidden">
+    <!-- Top Navbar -->
+    <header class="h-16 bg-[#0b0509]/90 border-b border-pink-900/30 flex items-center justify-between px-6 shrink-0 z-20 shadow-sm backdrop-blur-md">
+      <div class="flex items-center space-x-4">
+        <div class="font-bold text-lg text-white tracking-tight flex items-center">
+          <svg class="w-5 h-5 mr-2 text-[#CF0C5A]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
+          TephdyPDF Pro Studio
+        </div>
+      </div>
+      <div class="flex items-center space-x-4">
+        <button id="resetBtn" class="hidden text-sm text-gray-400 hover:text-red-400 font-medium transition">Close File</button>
+        <button onclick="exitEditor()" class="text-xs font-semibold text-gray-300 hover:text-white bg-pink-950/50 border border-pink-800/40 px-3 py-1.5 rounded-lg transition">← Exit to Home</button>
+      </div>
+    </header>
+
+    <!-- Main Layout -->
+    <div class="flex flex-1 overflow-hidden relative">
+
+      <!-- ===== LEFT SIDEBAR: Thumbnails & Page Re-ordering ===== -->
+      <aside id="leftSidebar" class="w-48 bg-[#120711]/90 border-r border-pink-900/30 flex-col shrink-0 z-10 hidden h-[calc(100vh-4rem)]">
+        <div class="p-3 border-b border-pink-900/30 text-xs font-semibold text-pink-400 uppercase tracking-wider shrink-0 bg-[#0b0509] flex justify-between items-center">
+          <span>Pages</span>
+          <span id="pageCountBadge" class="text-[10px] bg-pink-950 text-pink-300 px-1.5 py-0.5 rounded border border-pink-800/50">0</span>
+        </div>
+        <div id="thumbnailContainer" class="flex-1 overflow-y-auto p-4 space-y-4">
+          <!-- Thumbnails injected here -->
+        </div>
+      </aside>
+
+      <!-- ===== CENTER WORKSPACE: PDF Viewer ===== -->
+      <main id="mainWorkspace" class="flex-1 bg-[#070307] overflow-auto relative flex flex-col transition-all duration-300">
+        
+        <!-- Upload Placeholder -->
+        <div id="uploadPlaceholder" class="absolute inset-0 flex flex-col items-center justify-center p-8 bg-[#0b0509] z-10">
+          <div class="glass-card p-10 rounded-3xl shadow-2xl flex flex-col items-center max-w-md w-full border border-pink-900/40">
+            <div class="w-20 h-20 bg-pink-950/60 rounded-full flex items-center justify-center mb-6 border border-pink-800/30 shadow-inner">
+              <svg class="w-10 h-10 text-[#CF0C5A]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
+            </div>
+            <h2 class="text-2xl font-bold text-white mb-2">Upload Document</h2>
+            <p class="text-gray-400 text-center mb-6 text-sm">Select a PDF file to start editing text, adding shapes, images, signatures, and re-ordering pages.</p>
+            <button id="selectPdfBtn" class="w-full bg-gradient-to-r from-[#CF0C5A] to-pink-600 hover:from-pink-600 hover:to-pink-700 text-white font-semibold py-3 px-6 rounded-xl shadow-lg shadow-[#CF0C5A]/35 transition duration-200">
+              Select PDF File
+            </button>
+            <input type="file" id="fileInput" accept=".pdf" />
+          </div>
+        </div>
+
+        <!-- PDF Rendering Area -->
+        <div id="pdfViewer" class="hidden w-full py-8 px-4 flex flex-col items-center relative z-0">
+          <!-- Pages injected here -->
+        </div>
+      </main>
+
+      <!-- ===== RIGHT SIDEBAR: Tools ===== -->
+      <aside id="rightSidebar" class="w-80 bg-[#120711]/90 border-l border-pink-900/30 flex-col shrink-0 z-20 shadow-2xl hidden h-[calc(100vh-4rem)]">
+        
+        <!-- Sidebar Header -->
+        <div class="p-4 border-b border-pink-900/30 flex items-center justify-between shrink-0 bg-[#0b0509]">
+          <h2 class="text-lg font-bold text-white">Editor Suite</h2>
+        </div>
+
+        <!-- Scrollable Tool Panel Container -->
+        <div class="flex-1 overflow-y-auto p-4 space-y-6">
+          
+          <!-- Tool Switcher Tabs -->
+          <div class="grid grid-cols-4 gap-1 bg-pink-950/40 p-1 rounded-xl border border-pink-900/40 text-[11px] font-semibold">
+            <button onclick="switchTab('signTab')" id="btnSignTab" class="py-2 rounded-lg bg-[#CF0C5A] text-white transition">Sign</button>
+            <button onclick="switchTab('textTab')" id="btnTextTab" class="py-2 rounded-lg text-gray-300 hover:text-white transition">Text</button>
+            <button onclick="switchTab('shapeTab')" id="btnShapeTab" class="py-2 rounded-lg text-gray-300 hover:text-white transition">Shapes</button>
+            <button onclick="switchTab('imageTab')" id="btnImageTab" class="py-2 rounded-lg text-gray-300 hover:text-white transition">Image</button>
+          </div>
+
+          <!-- TAB 1: SIGNATURE TOOL -->
+          <div id="signTab" class="space-y-4">
+            <div class="border border-pink-900/40 rounded-xl p-4 bg-[#0b0509]/60 flex flex-col space-y-4">
+              <h3 class="font-semibold text-gray-200 flex items-center text-xs uppercase tracking-wide">
+                <svg class="w-4 h-4 mr-2 text-[#CF0C5A]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
+                Draw Signature
+              </h3>
+              <div class="bg-white rounded-lg border border-pink-900/30 p-1">
+                 <canvas id="signatureCanvas" class="signature-canvas w-full rounded" style="height: 120px;"></canvas>
+              </div>
+              <div class="space-y-3">
+                <div>
+                  <label class="text-xs font-medium text-gray-300 flex justify-between mb-1">
+                    <span>Line Thickness</span>
+                    <span id="widthValue" class="font-bold text-[#CF0C5A]">2.5</span>
+                  </label>
+                  <input type="range" id="lineWidthSlider" min="1" max="10" step="0.5" value="2.5" class="w-full h-2 bg-pink-950 rounded-lg appearance-none cursor-pointer accent-[#CF0C5A]">
+                </div>
+                <div>
+                  <label class="text-xs font-medium text-gray-300 block mb-1">Ink Color</label>
+                  <div class="flex items-center space-x-2">
+                    <input type="radio" id="colorBlack" name="inkColor" value="#000000" class="color-radio" checked>
+                    <label for="colorBlack" class="color-label shadow-sm" style="background-color: #000000;"></label>
+                    <input type="radio" id="colorBlue" name="inkColor" value="#1e3a8a" class="color-radio">
+                    <label for="colorBlue" class="color-label shadow-sm" style="background-color: #1e3a8a;"></label>
+                    <input type="radio" id="colorRed" name="inkColor" value="#dc2626" class="color-radio">
+                    <label for="colorRed" class="color-label shadow-sm" style="background-color: #dc2626;"></label>
+                    <input type="radio" id="colorPink" name="inkColor" value="#CF0C5A" class="color-radio">
+                    <label for="colorPink" class="color-label shadow-sm" style="background-color: #CF0C5A;"></label>
+                  </div>
+                </div>
+              </div>
+              <div class="flex space-x-2 pt-2 border-t border-pink-900/30">
+                <button id="clearSignatureBtn" class="flex-1 bg-pink-950/40 border border-pink-900/40 hover:bg-pink-900/50 text-gray-200 text-xs font-medium py-2 rounded-lg transition">Clear</button>
+                <button id="useSignatureBtn" class="flex-1 bg-gradient-to-r from-[#CF0C5A] to-pink-600 hover:from-pink-600 hover:to-pink-700 text-white text-xs font-medium py-2 rounded-lg shadow transition">Place Signature</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- TAB 2: TEXT ANNOTATION TOOL -->
+          <div id="textTab" class="space-y-4 hidden">
+            <div class="border border-pink-900/40 rounded-xl p-4 bg-[#0b0509]/60 flex flex-col space-y-4">
+              <h3 class="font-semibold text-gray-200 flex items-center text-xs uppercase tracking-wide">
+                <svg class="w-4 h-4 mr-2 text-[#CF0C5A]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+                Add Text Annotation
+              </h3>
+              <div>
+                <label class="text-xs font-medium text-gray-300 block mb-1">Text Content</label>
+                <input type="text" id="textInputContent" placeholder="Type annotation here..." value="Approved / Signed" class="w-full bg-pink-950/40 border border-pink-900/50 rounded-lg p-2 text-sm text-white focus:outline-none focus:border-[#CF0C5A]" />
+              </div>
+              <div class="grid grid-cols-2 gap-2">
+                <div>
+                  <label class="text-xs font-medium text-gray-300 block mb-1">Font Size</label>
+                  <select id="textFontSize" class="w-full bg-pink-950/40 border border-pink-900/50 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-[#CF0C5A]">
+                    <option value="12">12 px</option>
+                    <option value="14">14 px</option>
+                    <option value="16" selected>16 px</option>
+                    <option value="20">20 px</option>
+                    <option value="24">24 px</option>
+                    <option value="32">32 px</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="text-xs font-medium text-gray-300 block mb-1">Text Color</label>
+                  <input type="color" id="textColorPicker" value="#000000" class="w-full h-9 bg-transparent cursor-pointer rounded-lg border border-pink-900/50 p-1" />
+                </div>
+              </div>
+              <button id="addTextBtn" class="w-full bg-gradient-to-r from-[#CF0C5A] to-pink-600 hover:from-pink-600 hover:to-pink-700 text-white text-xs font-semibold py-2.5 rounded-lg shadow transition">
+                Place Text on Page
+              </button>
+            </div>
+          </div>
+
+          <!-- TAB 3: SHAPES TOOL -->
+          <div id="shapeTab" class="space-y-4 hidden">
+            <div class="border border-pink-900/40 rounded-xl p-4 bg-[#0b0509]/60 flex flex-col space-y-4">
+              <h3 class="font-semibold text-gray-200 flex items-center text-xs uppercase tracking-wide">
+                <svg class="w-4 h-4 mr-2 text-[#CF0C5A]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"></path></svg>
+                Insert Vector Shapes
+              </h3>
+              <div>
+                <label class="text-xs font-medium text-gray-300 block mb-1">Shape Type</label>
+                <div class="grid grid-cols-2 gap-2">
+                  <button onclick="selectShape('rect')" id="shapeRectBtn" class="py-2 px-3 rounded-lg bg-[#CF0C5A] text-white text-xs font-medium transition border border-pink-700">Rectangle</button>
+                  <button onclick="selectShape('circle')" id="shapeCircleBtn" class="py-2 px-3 rounded-lg bg-pink-950/40 text-gray-300 text-xs font-medium transition border border-pink-900/50">Circle / Stamp</button>
+                </div>
+              </div>
+              <div>
+                <label class="text-xs font-medium text-gray-300 block mb-1">Border / Outline Color</label>
+                <input type="color" id="shapeBorderColor" value="#CF0C5A" class="w-full h-9 bg-transparent cursor-pointer rounded-lg border border-pink-900/50 p-1" />
+              </div>
+              <button id="addShapeBtn" class="w-full bg-gradient-to-r from-[#CF0C5A] to-pink-600 hover:from-pink-600 hover:to-pink-700 text-white text-xs font-semibold py-2.5 rounded-lg shadow transition">
+                Place Shape on Page
+              </button>
+            </div>
+          </div>
+
+          <!-- TAB 4: IMAGE INSERTION TOOL -->
+          <div id="imageTab" class="space-y-4 hidden">
+            <div class="border border-pink-900/40 rounded-xl p-4 bg-[#0b0509]/60 flex flex-col space-y-4">
+              <h3 class="font-semibold text-gray-200 flex items-center text-xs uppercase tracking-wide">
+                <svg class="w-4 h-4 mr-2 text-[#CF0C5A]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                Insert Image Stamp
+              </h3>
+              <p class="text-xs text-gray-400">Upload a PNG or JPG image to embed and position anywhere on your document.</p>
+              <button id="selectImageBtn" class="w-full bg-pink-950/50 border border-pink-800/40 hover:bg-pink-900/50 text-white text-xs font-semibold py-3 rounded-lg shadow transition flex items-center justify-center space-x-2">
+                <svg class="w-4 h-4 text-[#CF0C5A]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                <span>Choose Image File</span>
+              </button>
+              <input type="file" id="imageUploadInput" accept="image/png, image/jpeg" />
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Bottom Actions (Fixed Footer inside Sidebar) -->
+        <div class="p-4 border-t border-pink-900/30 bg-[#0b0509] shrink-0">
+          <button id="saveChangesBtn" class="w-full bg-gradient-to-r from-[#CF0C5A] to-pink-600 hover:from-pink-600 hover:to-pink-700 text-white font-bold py-3 px-4 rounded-xl shadow-lg shadow-[#CF0C5A]/40 transition duration-200 flex items-center justify-center space-x-2">
+            <span>Save Changes & Download</span>
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+          </button>
+        </div>
+
+      </aside>
+
+    </div>
+  </div>
+
+  <!-- ================= MODAL DIALOGS ================= -->
+  <div id="modalBackdrop" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="glass-card max-w-2xl w-full max-h-[85vh] overflow-y-auto rounded-3xl p-8 border border-pink-800/40 shadow-2xl relative">
+      <button onclick="closeModal()" class="absolute top-6 right-6 text-gray-400 hover:text-white p-2 rounded-full bg-pink-950/50 hover:bg-pink-900 transition">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+      </button>
+      <div id="modalContent" class="space-y-4 text-gray-300 text-sm leading-relaxed">
+        <!-- Dynamic Modal Content injected here -->
+      </div>
+    </div>
+  </div>

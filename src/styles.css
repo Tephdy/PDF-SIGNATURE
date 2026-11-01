@@ -1,0 +1,115 @@
+@import "tailwindcss";
+
+/* Custom scrollbars */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.05); }
+::-webkit-scrollbar-thumb { background: rgba(207, 12, 90, 0.4); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(207, 12, 90, 0.8); }
+
+/* PDF page container */
+.pdf-page-container {
+  position: relative;
+  background: white;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  margin: 0 auto 2rem auto;
+  display: inline-block;
+  transition: box-shadow 0.2s;
+}
+
+.pdf-page-container canvas { display: block; }
+
+.pdf-page-container.active-page {
+  box-shadow: 0 0 0 3px #CF0C5A, 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+/* Draggable annotation overlays */
+.annotation-overlay {
+  position: absolute;
+  cursor: move;
+  z-index: 100;
+  border: 2px dashed #CF0C5A;
+  background: rgba(255, 255, 255, 0.95);
+  padding: 4px;
+  border-radius: 4px;
+  user-select: none;
+  box-sizing: border-box;
+}
+
+.annotation-text {
+  background: transparent;
+  border: none;
+  outline: none;
+  resize: none;
+  font-family: sans-serif;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+.resize-handle {
+  position: absolute;
+  right: -6px;
+  bottom: -6px;
+  width: 12px;
+  height: 12px;
+  background-color: #CF0C5A;
+  border: 2px solid white;
+  border-radius: 50%;
+  cursor: nwse-resize;
+  z-index: 110;
+}
+
+.delete-btn {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  width: 20px;
+  height: 20px;
+  background-color: #dc2626;
+  color: white;
+  border-radius: 50%;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 120;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.signature-canvas { cursor: crosshair; touch-action: none; }
+#fileInput, #imageUploadInput { display: none; }
+
+.color-radio { display: none; }
+.color-label {
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: transform 0.1s;
+}
+.color-label:hover { transform: scale(1.1); }
+.color-radio:checked + .color-label { border-color: #CF0C5A; transform: scale(1.1); }
+
+.spinner {
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top: 3px solid white;
+  width: 18px;
+  height: 18px;
+  animation: spin 1s linear infinite;
+  display: inline-block;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.glass-card {
+  background: rgba(20, 10, 20, 0.75);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(207, 12, 90, 0.25);
+}
