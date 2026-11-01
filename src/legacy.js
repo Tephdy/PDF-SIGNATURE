@@ -15,7 +15,7 @@
         x: Math.random() * bgCanvas.width,
         y: Math.random() * bgCanvas.height,
         radius: Math.random() * 2.5 + 1,
-        color: Math.random() > 0.4 ? 'rgba(207, 12, 90, 0.7)' : 'rgba(236, 72, 153, 0.4)',
+        color: Math.random() > 0.4 ? 'rgba(245, 197, 39, 0.7)' : 'rgba(245, 197, 39, 0.4)',
         vx: (Math.random() - 0.5) * 0.5,
         vy: (Math.random() - 0.5) * 0.5
       });
@@ -32,7 +32,7 @@
             bgCtx.beginPath();
             bgCtx.moveTo(particles[i].x, particles[i].y);
             bgCtx.lineTo(particles[j].x, particles[j].y);
-            bgCtx.strokeStyle = `rgba(207, 12, 90, ${0.15 * (1 - dist / 120)})`;
+            bgCtx.strokeStyle = `rgba(245, 197, 39, ${0.15 * (1 - dist / 120)})`;
             bgCtx.lineWidth = 1;
             bgCtx.stroke();
           }
@@ -118,10 +118,10 @@
       document.getElementById('btnImageTab').className = 'py-2 rounded-lg text-gray-300 hover:text-white transition';
 
       document.getElementById(tabId).classList.remove('hidden');
-      if (tabId === 'signTab') document.getElementById('btnSignTab').className = 'py-2 rounded-lg bg-[#CF0C5A] text-white transition';
-      if (tabId === 'textTab') document.getElementById('btnTextTab').className = 'py-2 rounded-lg bg-[#CF0C5A] text-white transition';
-      if (tabId === 'shapeTab') document.getElementById('btnShapeTab').className = 'py-2 rounded-lg bg-[#CF0C5A] text-white transition';
-      if (tabId === 'imageTab') document.getElementById('btnImageTab').className = 'py-2 rounded-lg bg-[#CF0C5A] text-white transition';
+      if (tabId === 'signTab') document.getElementById('btnSignTab').className = 'py-2 rounded-lg bg-[#F5C527] text-[#17130A] transition';
+      if (tabId === 'textTab') document.getElementById('btnTextTab').className = 'py-2 rounded-lg bg-[#F5C527] text-[#17130A] transition';
+      if (tabId === 'shapeTab') document.getElementById('btnShapeTab').className = 'py-2 rounded-lg bg-[#F5C527] text-[#17130A] transition';
+      if (tabId === 'imageTab') document.getElementById('btnImageTab').className = 'py-2 rounded-lg bg-[#F5C527] text-[#17130A] transition';
       if (tabId === 'signTab') requestAnimationFrame(resizeCanvas);
     }
 
@@ -130,11 +130,11 @@
     function selectShape(type) {
       currentSelectedShape = type;
       if (type === 'rect') {
-        document.getElementById('shapeRectBtn').className = 'py-2 px-3 rounded-lg bg-[#CF0C5A] text-white text-xs font-medium transition border border-pink-700';
-        document.getElementById('shapeCircleBtn').className = 'py-2 px-3 rounded-lg bg-pink-950/40 text-gray-300 text-xs font-medium transition border border-pink-900/50';
+        document.getElementById('shapeRectBtn').className = 'py-2 px-3 rounded-lg bg-[#F5C527] text-[#17130A] text-xs font-medium transition border border-yellow-700';
+        document.getElementById('shapeCircleBtn').className = 'py-2 px-3 rounded-lg bg-yellow-950/40 text-gray-300 text-xs font-medium transition border border-yellow-900/50';
       } else {
-        document.getElementById('shapeCircleBtn').className = 'py-2 px-3 rounded-lg bg-[#CF0C5A] text-white text-xs font-medium transition border border-pink-700';
-        document.getElementById('shapeRectBtn').className = 'py-2 px-3 rounded-lg bg-pink-950/40 text-gray-300 text-xs font-medium transition border border-pink-900/50';
+        document.getElementById('shapeCircleBtn').className = 'py-2 px-3 rounded-lg bg-[#F5C527] text-[#17130A] text-xs font-medium transition border border-yellow-700';
+        document.getElementById('shapeRectBtn').className = 'py-2 px-3 rounded-lg bg-yellow-950/40 text-gray-300 text-xs font-medium transition border border-yellow-900/50';
       }
     }
 
@@ -142,7 +142,7 @@
     const modalData = {
       aboutModal: `
         <h2 class="text-2xl font-bold text-white mb-2">About VeloPdf</h2>
-        <p class="text-xs text-pink-400 font-semibold mb-4">Developed by Tephdytech by Joseph Tanay Amandy</p>
+        <p class="text-xs text-yellow-400 font-semibold mb-4">Developed by Tephdytech by Joseph Tanay Amandy</p>
         <p>VeloPdf is a browser-based PDF utility developed and maintained by Tephdytech, associated with Joseph Tanay Amandy. It provides tools to view PDF pages, add visible text, shapes, images and hand-drawn marks, rearrange or remove pages, and export an edited copy.</p>
         <h3 class="text-base font-semibold text-white">Publisher and contact</h3>
         <p>This notice identifies the publisher using the name currently provided for the project. It does not establish a registered company, registered office, mailing address, or dedicated support address. For project questions, use the official channel through which you obtained VeloPdf. Do not send sensitive documents or personal information through a public channel.</p>
@@ -423,13 +423,13 @@
         const thumbCanvas = document.createElement('canvas');
         thumbCanvas.width = thumbViewport.width;
         thumbCanvas.height = thumbViewport.height;
-        thumbCanvas.className = 'border border-pink-900/40 rounded shadow-sm cursor-pointer hover:border-[#CF0C5A] transition';
+        thumbCanvas.className = 'border border-yellow-900/40 rounded shadow-sm cursor-pointer hover:border-[#F5C527] transition';
         
         const thumbCtx = thumbCanvas.getContext('2d');
         await page.render({ canvasContext: thumbCtx, viewport: thumbViewport }).promise;
         
         const thumbWrapper = document.createElement('div');
-        thumbWrapper.className = 'flex flex-col items-center space-y-1 relative bg-pink-950/20 p-2 rounded-xl border border-pink-900/30';
+        thumbWrapper.className = 'flex flex-col items-center space-y-1 relative bg-yellow-950/20 p-2 rounded-xl border border-yellow-900/30';
         thumbWrapper.appendChild(thumbCanvas);
         
         const labelRow = document.createElement('div');
@@ -447,7 +447,7 @@
           const moveUpBtn = document.createElement('button');
           moveUpBtn.innerHTML = '▲';
           moveUpBtn.title = 'Move Page Up';
-          moveUpBtn.className = 'text-[10px] text-pink-300 hover:text-white bg-pink-900/50 px-1 rounded transition';
+          moveUpBtn.className = 'text-[10px] text-yellow-300 hover:text-white bg-yellow-900/50 px-1 rounded transition';
           moveUpBtn.onclick = async (ev) => {
             ev.stopPropagation();
             await movePage(i, i - 1);
@@ -460,7 +460,7 @@
           const moveDownBtn = document.createElement('button');
           moveDownBtn.innerHTML = '▼';
           moveDownBtn.title = 'Move Page Down';
-          moveDownBtn.className = 'text-[10px] text-pink-300 hover:text-white bg-pink-900/50 px-1 rounded transition';
+          moveDownBtn.className = 'text-[10px] text-yellow-300 hover:text-white bg-yellow-900/50 px-1 rounded transition';
           moveDownBtn.onclick = async (ev) => {
             ev.stopPropagation();
             await movePage(i, i + 1);

@@ -44,7 +44,7 @@ function App() {
 
   return (
     <div
-      className="relative flex h-screen w-screen flex-col overflow-hidden bg-[#0b0509] font-sans text-gray-100 selection:bg-[#CF0C5A] selection:text-white"
+      className="relative flex h-screen w-screen flex-col overflow-hidden bg-[#0D0D0B] font-sans text-gray-100 selection:bg-[#F5C527] selection:text-[#17130A]"
       onClick={handleLegacyClick}
     >
       {parse(reactMarkup)}
