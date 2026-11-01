@@ -283,14 +283,14 @@
 
   #rightSidebar {
     right: 0;
+    top: 3.75rem;
     bottom: 4.5rem;
-    left: 0;
-    width: 100%;
-    max-height: min(calc(100dvh - 8.25rem), 46rem);
+    left: auto;
+    width: min(90vw, 24rem);
+    max-height: none;
     border-right: 0;
-    border-bottom: 0;
-    border-radius: 1rem 1rem 0 0;
-    transform: translateY(calc(100% + 1rem));
+    border-radius: 1rem 0 0 1rem;
+    transform: translateX(calc(100% + 1rem));
   }
 
   #leftSidebar.mobile-panel-open,

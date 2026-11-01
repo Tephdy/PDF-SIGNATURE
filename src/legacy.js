@@ -764,6 +764,7 @@
 
       pdfViewer.appendChild(overlay);
       attachDragAndResize(overlay);
+      closeMobilePanel();
     });
 
     // ===== 2. PLACE TEXT ANNOTATION =====
@@ -793,6 +794,7 @@
 
       pdfViewer.appendChild(overlay);
       attachDragAndResize(overlay);
+      closeMobilePanel();
     });
 
     // ===== 3. PLACE SHAPE =====
@@ -825,6 +827,7 @@
 
       pdfViewer.appendChild(overlay);
       attachDragAndResize(overlay);
+      closeMobilePanel();
     });
 
     // ===== 4. INSERT CUSTOM IMAGE =====
@@ -856,6 +859,7 @@
         pdfViewer.appendChild(overlay);
         attachDragAndResize(overlay);
         imageUploadInput.value = '';
+        closeMobilePanel();
       };
       reader.readAsDataURL(file);
     });
