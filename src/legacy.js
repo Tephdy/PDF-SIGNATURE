@@ -395,6 +395,7 @@
         const availableWidth = Math.max(240, mainWorkspace.clientWidth - 32);
         const scale = Math.min(1.5, availableWidth / baseViewport.width);
         const viewport = page.getViewport({ scale });
+        const outputScale = Math.min(window.devicePixelRatio || 1, 2);
         
         const pageContainer = document.createElement('div');
         pageContainer.className = 'pdf-page-container';
@@ -402,14 +403,20 @@
         pageContainer.dataset.scale = scale;
         
         const canvas = document.createElement('canvas');
-        canvas.width = viewport.width;
-        canvas.height = viewport.height;
+        canvas.width = Math.floor(viewport.width * outputScale);
+        canvas.height = Math.floor(viewport.height * outputScale);
+        canvas.style.width = `${viewport.width}px`;
+        canvas.style.height = `${viewport.height}px`;
         
         pageContainer.appendChild(canvas);
         pdfViewer.appendChild(pageContainer);
 
         const ctx = canvas.getContext('2d');
-        await page.render({ canvasContext: ctx, viewport }).promise;
+        await page.render({
+          canvasContext: ctx,
+          viewport,
+          transform: outputScale === 1 ? null : [outputScale, 0, 0, outputScale, 0, 0],
+        }).promise;
 
         pageContainer.addEventListener('pointerdown', () => {
            document.querySelectorAll('.pdf-page-container').forEach(el => el.classList.remove('active-page'));
