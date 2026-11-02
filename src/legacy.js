@@ -538,13 +538,28 @@
     const useSignatureBtn = document.getElementById('useSignatureBtn');
     const lineWidthSlider = document.getElementById('lineWidthSlider');
     const widthValue = document.getElementById('widthValue');
-    const colorRadios = document.querySelectorAll('input[name="inkColor"]');
+    const signatureColorPicker = document.getElementById('signatureColorPicker');
 
     // Text controls
     const addTextBtn = document.getElementById('addTextBtn');
     const textInputContent = document.getElementById('textInputContent');
+    const textFontFamily = document.getElementById('textFontFamily');
     const textFontSize = document.getElementById('textFontSize');
     const textColorPicker = document.getElementById('textColorPicker');
+    const textFontOptions = {
+      Helvetica: { cssFamily: 'Arial, Helvetica, sans-serif', weight: 'normal', style: 'normal' },
+      HelveticaBold: { cssFamily: 'Arial, Helvetica, sans-serif', weight: 'bold', style: 'normal' },
+      HelveticaOblique: { cssFamily: 'Arial, Helvetica, sans-serif', weight: 'normal', style: 'italic' },
+      HelveticaBoldOblique: { cssFamily: 'Arial, Helvetica, sans-serif', weight: 'bold', style: 'italic' },
+      TimesRoman: { cssFamily: '"Times New Roman", Times, serif', weight: 'normal', style: 'normal' },
+      TimesRomanBold: { cssFamily: '"Times New Roman", Times, serif', weight: 'bold', style: 'normal' },
+      TimesRomanItalic: { cssFamily: '"Times New Roman", Times, serif', weight: 'normal', style: 'italic' },
+      TimesRomanBoldItalic: { cssFamily: '"Times New Roman", Times, serif', weight: 'bold', style: 'italic' },
+      Courier: { cssFamily: '"Courier New", Courier, monospace', weight: 'normal', style: 'normal' },
+      CourierBold: { cssFamily: '"Courier New", Courier, monospace', weight: 'bold', style: 'normal' },
+      CourierOblique: { cssFamily: '"Courier New", Courier, monospace', weight: 'normal', style: 'italic' },
+      CourierBoldOblique: { cssFamily: '"Courier New", Courier, monospace', weight: 'bold', style: 'italic' },
+    };
 
     // Shape controls
     const addShapeBtn = document.getElementById('addShapeBtn');
@@ -875,11 +890,9 @@
       widthValue.textContent = currentLineWidth;
       updateCanvasStyle();
     });
-    colorRadios.forEach(radio => {
-      radio.addEventListener('change', (e) => {
-        currentColor = e.target.value;
-        updateCanvasStyle();
-      });
+    signatureColorPicker.addEventListener('input', () => {
+      currentColor = signatureColorPicker.value;
+      updateCanvasStyle();
     });
 
     function getPos(e) {
@@ -1027,8 +1040,15 @@
     addTextBtn.addEventListener('click', () => {
       if (!pdfDoc) return alert('Please load a PDF first.');
       const textVal = textInputContent.value.trim() || 'Sample Text';
+      const fontKey = textFontFamily.value;
+      const fontOptions = textFontOptions[fontKey];
       const fontSize = textFontSize.value;
       const color = textColorPicker.value;
+
+      if (!fontOptions) {
+        console.error(`Unsupported text font: ${fontKey}`);
+        return alert('The selected font is not supported.');
+      }
 
       const overlay = document.createElement('div');
       overlay.className = 'annotation-overlay is-text';
@@ -1042,11 +1062,18 @@
         overlay.style.top = (targetPage.offsetTop + 150) + 'px';
       }
 
-      overlay.innerHTML = `
-        <div class="delete-btn">×</div>
-        <input type="text" class="annotation-text" value="${textVal}" style="font-size: ${fontSize}px; color: ${color}; font-weight: bold;" />
-        <div class="resize-handle"></div>
-      `;
+      overlay.innerHTML = '<div class="delete-btn">×</div><div class="resize-handle"></div>';
+      const textInput = document.createElement('input');
+      textInput.type = 'text';
+      textInput.className = 'annotation-text';
+      textInput.value = textVal;
+      textInput.dataset.pdfFont = fontKey;
+      textInput.style.fontFamily = fontOptions.cssFamily;
+      textInput.style.fontSize = `${fontSize}px`;
+      textInput.style.fontWeight = fontOptions.weight;
+      textInput.style.fontStyle = fontOptions.style;
+      textInput.style.color = color;
+      overlay.insertBefore(textInput, overlay.querySelector('.resize-handle'));
 
       pdfViewer.appendChild(overlay);
       attachDragAndResize(overlay);
@@ -1133,9 +1160,10 @@
       saveChangesBtn.classList.add('opacity-80', 'cursor-not-allowed');
 
       try {
-        const { PDFDocument, rgb } = PDFLib;
+        const { PDFDocument, StandardFonts, rgb } = PDFLib;
         const pdfDocLib = await PDFDocument.load(originalPdfArrayBuffer);
         const pages = pdfViewer.querySelectorAll('.pdf-page-container');
+        const embeddedFonts = new Map();
 
         for (const overlay of overlays) {
           const rect = overlay.getBoundingClientRect();
@@ -1181,9 +1209,17 @@
             pdfPage.drawImage(pngImage, { x: xPdf, y: yPdf, width: widthPdf, height: heightPdf });
           } 
           else if (annType === 'text') {
-            const inputVal = overlay.querySelector('input').value;
-            const colorStyle = overlay.querySelector('input').style.color || '#000000';
-            const fontSizePx = parseFloat(overlay.querySelector('input').style.fontSize) || 16;
+            const textInput = overlay.querySelector('input');
+            const inputVal = textInput.value;
+            const colorStyle = textInput.style.color || '#000000';
+            const fontSizePx = parseFloat(textInput.style.fontSize) || 16;
+            const fontKey = textInput.dataset.pdfFont || 'Helvetica';
+            const fontName = StandardFonts[fontKey];
+            if (!fontName) throw new Error(`Unsupported PDF font: ${fontKey}`);
+            if (!embeddedFonts.has(fontKey)) {
+              embeddedFonts.set(fontKey, pdfDocLib.embedFont(fontName));
+            }
+            const font = await embeddedFonts.get(fontKey);
             
             let r = 0, g = 0, b = 0;
             if (colorStyle.startsWith('#')) {
@@ -1199,6 +1235,7 @@
               y: yPdf + (heightPdf / 3),
               size: fontSizePx / scale,
               color: rgb(r, g, b),
+              font,
             });
           } 
           else if (annType === 'shape') {

@@ -280,16 +280,7 @@
                 </div>
                 <div>
                   <label class="text-xs font-medium text-gray-300 block mb-1">Ink Color</label>
-                  <div class="flex items-center space-x-2">
-                    <input type="radio" id="colorBlack" name="inkColor" value="#000000" class="color-radio" checked>
-                    <label for="colorBlack" class="color-label shadow-sm" style="background-color: #000000;"></label>
-                    <input type="radio" id="colorBlue" name="inkColor" value="#1e3a8a" class="color-radio">
-                    <label for="colorBlue" class="color-label shadow-sm" style="background-color: #1e3a8a;"></label>
-                    <input type="radio" id="colorRed" name="inkColor" value="#dc2626" class="color-radio">
-                    <label for="colorRed" class="color-label shadow-sm" style="background-color: #dc2626;"></label>
-                    <input type="radio" id="colorYellow" name="inkColor" value="#F5C527" class="color-radio">
-                    <label for="colorYellow" class="color-label shadow-sm" style="background-color: #F5C527;"></label>
-                  </div>
+                  <input type="color" id="signatureColorPicker" value="#000000" aria-label="Signature ink color" class="w-full h-9 bg-transparent cursor-pointer rounded-lg border border-yellow-900/50 p-1" />
                 </div>
               </div>
               <div class="flex space-x-2 pt-2 border-t border-yellow-900/30">
@@ -311,6 +302,23 @@
                 <input type="text" id="textInputContent" placeholder="Type annotation here..." value="Approved / Signed" class="w-full bg-yellow-950/40 border border-yellow-900/50 rounded-lg p-2 text-sm text-white focus:outline-none focus:border-[#F5C527]" />
               </div>
               <div class="grid grid-cols-2 gap-2">
+                <div>
+                  <label class="text-xs font-medium text-gray-300 block mb-1" for="textFontFamily">Font</label>
+                  <select id="textFontFamily" class="w-full bg-yellow-950/40 border border-yellow-900/50 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-[#F5C527]">
+                    <option value="Helvetica">Helvetica</option>
+                    <option value="HelveticaBold">Helvetica Bold</option>
+                    <option value="HelveticaOblique">Helvetica Italic</option>
+                    <option value="HelveticaBoldOblique">Helvetica Bold Italic</option>
+                    <option value="TimesRoman">Times New Roman</option>
+                    <option value="TimesRomanBold">Times New Roman Bold</option>
+                    <option value="TimesRomanItalic">Times New Roman Italic</option>
+                    <option value="TimesRomanBoldItalic">Times New Roman Bold Italic</option>
+                    <option value="Courier">Courier</option>
+                    <option value="CourierBold">Courier Bold</option>
+                    <option value="CourierOblique">Courier Italic</option>
+                    <option value="CourierBoldOblique">Courier Bold Italic</option>
+                  </select>
+                </div>
                 <div>
                   <label class="text-xs font-medium text-gray-300 block mb-1">Font Size</label>
                   <select id="textFontSize" class="w-full bg-yellow-950/40 border border-yellow-900/50 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-[#F5C527]">
