@@ -320,15 +320,8 @@
                   </select>
                 </div>
                 <div>
-                  <label class="text-xs font-medium text-gray-300 block mb-1">Font Size</label>
-                  <select id="textFontSize" class="w-full bg-yellow-950/40 border border-yellow-900/50 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-[#F5C527]">
-                    <option value="12">12 px</option>
-                    <option value="14">14 px</option>
-                    <option value="16" selected>16 px</option>
-                    <option value="20">20 px</option>
-                    <option value="24">24 px</option>
-                    <option value="32">32 px</option>
-                  </select>
+                  <label class="text-xs font-medium text-gray-300 block mb-1" for="textFontSize">Font Size (px)</label>
+                  <input id="textFontSize" type="number" min="1" max="500" step="1" value="16" inputmode="numeric" class="w-full bg-yellow-950/40 border border-yellow-900/50 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-[#F5C527]" />
                 </div>
                 <div>
                   <label class="text-xs font-medium text-gray-300 block mb-1">Text Color</label>

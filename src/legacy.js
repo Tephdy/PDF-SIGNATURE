@@ -986,17 +986,30 @@
           if (e.button !== 0) return;
           e.preventDefault();
           e.stopPropagation();
+          if (resizeHandle.setPointerCapture) {
+            resizeHandle.setPointerCapture(e.pointerId);
+          }
 
           const startX = e.clientX;
           const startY = e.clientY;
           const startWidth = overlay.offsetWidth;
           const startHeight = overlay.offsetHeight;
+          const textInput = overlay.classList.contains('is-text')
+            ? overlay.querySelector('.annotation-text')
+            : null;
+          const startFontSize = textInput
+            ? parseFloat(textInput.style.fontSize) || 16
+            : 0;
 
           function onResizeMove(resizeEvent) {
             const dx = resizeEvent.clientX - startX;
             const dy = resizeEvent.clientY - startY;
-            overlay.style.width = Math.max(50, startWidth + dx) + 'px';
-            if (!overlay.classList.contains('is-text')) {
+            const nextWidth = Math.max(50, startWidth + dx);
+            overlay.style.width = `${nextWidth}px`;
+            if (textInput) {
+              const fontScale = nextWidth / startWidth;
+              textInput.style.fontSize = `${Math.max(8, startFontSize * fontScale)}px`;
+            } else {
               overlay.style.height = Math.max(30, startHeight + dy) + 'px';
             }
           }
@@ -1004,10 +1017,12 @@
           function onResizeUp() {
             window.removeEventListener('pointermove', onResizeMove);
             window.removeEventListener('pointerup', onResizeUp);
+            window.removeEventListener('pointercancel', onResizeUp);
           }
 
           window.addEventListener('pointermove', onResizeMove);
           window.addEventListener('pointerup', onResizeUp);
+          window.addEventListener('pointercancel', onResizeUp);
         });
       }
     }
@@ -1050,12 +1065,15 @@
       const textVal = textInputContent.value.trim() || 'Sample Text';
       const fontKey = textFontFamily.value;
       const fontOptions = textFontOptions[fontKey];
-      const fontSize = textFontSize.value;
+      const fontSize = Number(textFontSize.value);
       const color = textColorPicker.value;
 
       if (!fontOptions) {
         console.error(`Unsupported text font: ${fontKey}`);
         return alert('The selected font is not supported.');
+      }
+      if (!Number.isFinite(fontSize) || fontSize < 1 || fontSize > 500) {
+        return alert('Enter a font size between 1 and 500 pixels.');
       }
 
       const overlay = document.createElement('div');

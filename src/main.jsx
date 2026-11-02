@@ -8,7 +8,6 @@ import './styles.css';
 
 const reactMarkup = legacyMarkup
   .replace('<select id="textFontFamily"', '<select id="textFontFamily" defaultValue="Helvetica"')
-  .replace('<select id="textFontSize"', '<select id="textFontSize" defaultValue="16"')
   .replace(' selected>', '>')
   .replace(/onclick="([^"]*)"/g, (_, handler) => {
     const match = handler.match(/^(\w+)\((?:'([^']*)')?\)$/);
