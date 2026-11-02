@@ -35,6 +35,38 @@
   box-sizing: border-box;
 }
 
+.annotation-overlay.is-text {
+  cursor: text;
+  touch-action: auto;
+}
+
+.annotation-drag-handle {
+  position: absolute;
+  top: -14px;
+  left: -14px;
+  z-index: 130;
+  display: flex;
+  width: 30px;
+  height: 30px;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid white;
+  border-radius: 0.6rem;
+  background: #F5C527;
+  color: #17130A;
+  cursor: grab;
+  font-size: 1rem;
+  font-weight: 800;
+  line-height: 1;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.annotation-drag-handle:active {
+  cursor: grabbing;
+}
+
 .annotation-text {
   background: transparent;
   border: none;

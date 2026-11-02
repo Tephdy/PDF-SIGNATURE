@@ -940,16 +940,21 @@
     function attachDragAndResize(overlay) {
       const resizeHandle = overlay.querySelector('.resize-handle');
       const deleteBtn = overlay.querySelector('.delete-btn');
+      const dragHandle = overlay.querySelector('.annotation-drag-handle');
 
       deleteBtn.addEventListener('click', () => overlay.remove());
 
       overlay.addEventListener('pointerdown', (e) => {
         if (e.target.classList.contains('resize-handle') || e.target.classList.contains('delete-btn') || e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+        if (overlay.classList.contains('is-text') && !dragHandle?.contains(e.target)) return;
         if (e.button !== 0) return;
         e.preventDefault();
         e.stopPropagation();
 
         activeOverlay = overlay;
+        if (dragHandle?.setPointerCapture) {
+          dragHandle.setPointerCapture(e.pointerId);
+        }
         const viewerRect = pdfViewer.getBoundingClientRect();
         const dragStartX = (e.clientX - viewerRect.left) - overlay.offsetLeft;
         const dragStartY = (e.clientY - viewerRect.top) - overlay.offsetTop;
@@ -965,12 +970,15 @@
         }
 
         function onPointerUp() {
+          activeOverlay = null;
           window.removeEventListener('pointermove', onPointerMove);
           window.removeEventListener('pointerup', onPointerUp);
+          window.removeEventListener('pointercancel', onPointerUp);
         }
 
         window.addEventListener('pointermove', onPointerMove);
         window.addEventListener('pointerup', onPointerUp);
+        window.addEventListener('pointercancel', onPointerUp);
       });
 
       if (resizeHandle) {
@@ -1063,6 +1071,13 @@
       }
 
       overlay.innerHTML = '<div class="delete-btn">×</div><div class="resize-handle"></div>';
+      const dragHandle = document.createElement('button');
+      dragHandle.type = 'button';
+      dragHandle.className = 'annotation-drag-handle';
+      dragHandle.setAttribute('aria-label', 'Drag text annotation');
+      dragHandle.title = 'Drag text';
+      dragHandle.textContent = '↕';
+      overlay.appendChild(dragHandle);
       const textInput = document.createElement('input');
       textInput.type = 'text';
       textInput.className = 'annotation-text';
